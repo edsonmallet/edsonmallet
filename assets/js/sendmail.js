@@ -1,5 +1,4 @@
 (function() {
-
     var myform = $("form#contact");
     myform.submit(function(event) {
         event.preventDefault();
@@ -15,15 +14,12 @@
         myform.find("button").text("Enviando...").addClass('disabled');
         emailjs.send(service_id, template_id, params)
             .then(function() {
-                alert("Sent!");
-                myform.find("button").text("Enviado").addClass('disabled');
+                alert("Enviado, já que eu respondo!");
             }, function(err) {
                 alert("Erro ao Enviar\r\n Erro:\n " + JSON.stringify(err));
-                myform.find("button").text("Enviar").removeClass('disabled');
             });
+        myform.find("button").text("Enviar").removeClass('disabled');
+        myform.trigger('reset');
         return false;
     });
-
-
-
 }())
