@@ -4,24 +4,33 @@
         event.preventDefault();
 
         var params = myform.serializeArray().reduce(function(obj, item) {
-            obj[item.name] = item.value;
-            return obj;
+            if (item.value) {
+                obj[item.name] = item.value;
+                return obj;
+            } else {
+                return false;
+            }
         }, {});
-        console.log(params)
-            // Change to your service ID, or keep using the default service
+        // Change to your service ID, or keep using the default service
         var service_id = "gmail";
         var template_id = "email_portfolio";
-        myform.find("button").text("Enviando...").addClass('disabled');
-        emailjs.send(service_id, template_id, params)
-            .then(function() {
-                alert("Enviado, já que eu respondo!");
-                myform.find("button").text("Enviar").removeClass('disabled');
-                myform.trigger('reset');
-            }, function(err) {
-                alert("Erro ao Enviar\r\n Erro:\n " + JSON.stringify(err));
-                myform.find("button").text("Enviar").removeClass('disabled');
-                myform.trigger('reset');
-            });
+
+        if (params) {
+            myform.find("button").text("Enviando...").addClass('disabled');
+            emailjs.send(service_id, template_id, params)
+                .then(function() {
+                    alert("Enviado, já que eu respondo!");
+                    myform.find("button").text("Enviar").removeClass('disabled');
+                    myform.trigger('reset');
+                }, function(err) {
+                    alert("Erro ao Enviar\r\n Erro:\n " + JSON.stringify(err));
+                    myform.find("button").text("Enviar").removeClass('disabled');
+                    myform.trigger('reset');
+                });
+        } else {
+            alert("Tem que preencher tudo, por favor!");
+        }
+
         return false;
     });
 }())
