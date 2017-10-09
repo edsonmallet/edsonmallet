@@ -1,6 +1,29 @@
 (function() {
-    $("#contact").submit(function() {
-        //emailjs.send("default_service", "<YOUR TEMPLATE ID>", { name: "James", notes: "Check this out!" });
-        alert('Teste')
-    })
+
+    var myform = $("form#contact");
+    myform.submit(function(event) {
+        event.preventDefault();
+
+        var params = myform.serializeArray().reduce(function(obj, item) {
+            obj[item.name] = item.value;
+            return obj;
+        }, {});
+        console.log(params)
+            // Change to your service ID, or keep using the default service
+        var service_id = "gmail";
+        var template_id = "email_portfolio";
+        myform.find("button").text("Enviando...").addClass('disabled');
+        emailjs.send(service_id, template_id, params)
+            .then(function() {
+                alert("Sent!");
+                myform.find("button").text("Enviado").addClass('disabled');
+            }, function(err) {
+                alert("Erro ao Enviar\r\n Erro:\n " + JSON.stringify(err));
+                myform.find("button").text("Enviar").removeClass('disabled');
+            });
+        return false;
+    });
+
+
+
 }())
