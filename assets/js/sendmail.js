@@ -15,11 +15,13 @@
         emailjs.send(service_id, template_id, params)
             .then(function() {
                 alert("Enviado, já que eu respondo!");
+                myform.find("button").text("Enviar").removeClass('disabled');
+                myform.trigger('reset');
             }, function(err) {
                 alert("Erro ao Enviar\r\n Erro:\n " + JSON.stringify(err));
+                myform.find("button").text("Enviar").removeClass('disabled');
+                myform.trigger('reset');
             });
-        myform.find("button").text("Enviar").removeClass('disabled');
-        myform.trigger('reset');
         return false;
     });
 }())
